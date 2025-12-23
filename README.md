@@ -136,7 +136,32 @@ Khi nhìn vào cụm "Myxqbkd! drsc gsvv lo dro vkcd zkbd yp dro pvkq", lùi m�
 
 "Congrat! This will be the last part of the flag"
 
-Khả năng là mỗi chữ cái trong đoạn ở dưới cũng sẽ cần được lùi 10 bước, ta thu được một link Google Drive
+Khả năng là mỗi chữ cái trong đoạn ở dưới cũng sẽ cần được lùi 10 bước, decode Base 32. Sử dụng đoạn Python này:
+
+```
+import base64
+
+def decrypt_custom(text):
+    # Step 1: Caesar Unshift (-10) for letters only
+    unshifted_b32 = ""
+    for char in text:
+        if 'A' <= char <= 'Z':
+            # Shift back by 10 (or forward by 16)
+            unshifted_b32 += chr(((ord(char) - ord('A') - 10) % 26) + ord('A'))
+        else:
+            # Keep numbers and symbols as is
+            unshifted_b32 += char
+            
+    # Step 2: Base32 Decode
+    try:
+        decoded_bytes = base64.b32decode(unshifted_b32)
+        return decoded_bytes.decode('utf-8')
+    except Exception as e:
+        return f"Error: {e}"
+
+cipher_part2 = "XL2RS4NDRSHC6JNCXP3QUVDRX5HGY3NPPJBG63TZWBJQC5DPP5DQ63NOWFJRQVJBX5PFE3DAXPNOIGMMTLQG64V2ZLMPUXUWRLWGA6VWYBGOYD2WYJND65VDYK6GS4DTYJCF63NTXJFA===="
+print(decrypt_custom(cipher_part2))
+```
 
 <img width="1919" height="1037" alt="image" src="https://github.com/user-attachments/assets/5e3ae8b3-a968-4c19-9a4a-3398e8b5c1a4" />
 
